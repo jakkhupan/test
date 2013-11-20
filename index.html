@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style>
+#GeoMap {
+    width:600px;
+    height:400px;
+}
+</style>
+<script src='http://maps.google.com/maps/api/js?sensor=true'></script>
+<script>
+if(navigator.geolocation) {
+       
+function hasPosition(position) {
+        var point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
+           
+        myOptions = {
+            zoom: 15,
+            center: point,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+         },
+           
+        GeoMap = document.getElementById('GeoMap'),
+        map = new google.maps.Map(GeoMap, myOptions),
+           
+        marker = new google.maps.Marker({
+            position: point,
+            map: map,
+            title: 'You are here'
+        });
+			
+	var str = '';
+        str += 'Your latitude: ' + position.coords.latitude + '<br />';
+        str += 'Your longitude: ' + position.coords.longitude + '<br />';
+        str += 'Your altitude: ' + position.coords.altitude + '<br />';
+        str += 'Accuracy: ' + position.coords.accuracy + '<br />';
+        str += 'Altitude accuracy: ' + position.coords.altitudeAccuracy + '<br />';
+        str += 'Heading: ' + position.coords.heading + '<br />';
+        str += 'Speed: ' + position.coords.speed + '<br />';
+        str += 'Retrieved at: ' + position.timestamp;
+        document.getElementById('GeoResults').innerHTML = str;
+
+    }
+    navigator.geolocation.getCurrentPosition(
+		hasPosition, 
+		displayError, 
+		{
+			enableHighAccuracy:true, //Enable GPS
+			maximumAge:30000,
+			timeout:27000
+		}
+	);
+}   
+function displayError(error) {
+	var errors = { 
+    1: 'Permission denied',
+    2: 'Position unavailable',
+    3: 'Request timeout'
+  };
+  alert("Error: " + errors[error.code]);
+}
+</script>
+</head>
+
+<body>
+<div id='GeoMap'></div>
+<div id='GeoResults'></div>
+</body>
+</html>
