@@ -14,22 +14,65 @@
 if(navigator.geolocation) {
        
 function hasPosition(position) {
-        var point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-           
+        var point = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+         
+		
+		 
         myOptions = {
             zoom: 15,
             center: point,
             mapTypeId: google.maps.MapTypeId.ROADMAP
          },
            
-        GeoMap = document.getElementById('GeoMap'),
-        map = new google.maps.Map(GeoMap, myOptions),
+        GeoMap = document.getElementById('GeoMap')
+        map = new google.maps.Map(GeoMap, myOptions)
            
-        marker = new google.maps.Marker({
-            position: point,
+		marker = new google.maps.Marker({
+			position:point,
+			map: map,
+			title: 'You are here'
+		});
+		
+		//PSU
+		var locations = [
+			['A', 7.014306840292229, 100.49550533294678],
+			['B', 7.009238108567266,100.49456119537354],
+			['C', 7.001698800581102,100.49172878265381],
+			['D', 7.002039562894103,100.50031185150146],
+			['E', 7.0002079625353355,100.5075216293335],
+			['F', 7.0032322290293285,100.5080795288086],
+			['G', 7.005873121760731,100.50739288330078],
+			['H', 7.007363941697386,100.50799369812012],
+			['I', 7.0082584313708365,100.50966739654541],
+			['J', 7.00915291932759,100.50919532775879],
+			['K', 7.011751184131063,100.50945281982422],
+			['L', 7.011154862342536,100.50769329071045],
+			['M', 7.014051275307182,100.49610614776611],
+			['N', 7.014306840292229,100.49550533294678]
+		]; 
+		
+       for (i=0; i<locations.length; i++) {
+	    marker = new google.maps.Marker({
+			position: new google.maps.LatLng(locations[i][1], locations[i][2]),
             map: map,
-            title: 'You are here'
+            title: ''+locations[i][0]+''
         });
+	   }
+	   
+	   var PSU;
+	   var PSUCoords = [];
+	   for (i=0; i<locations.length; i++) {
+		   PSUCoords.push(new google.maps.LatLng(locations[i][1], locations[i][2]))
+	   }
+	   PSU = new google.maps.Polygon({
+		   	paths: PSUCoords,
+			strokeColor: '#FF0000',
+			strokeOpacity: 0.8,
+			strokeWeight: 2,
+			fillColor: '#FF0000',
+			fillOpacity: 0.35
+	   });
+	   PSU.setMap(map)
 			
 	var str = '';
         str += 'Your latitude: ' + position.coords.latitude + '<br />';
